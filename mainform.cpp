@@ -28,12 +28,37 @@ MainForm::MainForm(QWidget *parent) :
         ui->lineEdit_2->setText(path_dest);
         timer->start();
     }
+
+    tray = new QSystemTrayIcon(this);
+    tray->setContextMenu(ui->menu);
+    tray->setIcon(QIcon("://icon.png"));
+    connect(tray,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),this,SLOT(trayIconActivated(QSystemTrayIcon::ActivationReason)));
+    tray->show();
 }
 
 MainForm::~MainForm()
 {
     delete thread_copy;
     delete ui;
+}
+
+void MainForm::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
+{
+    switch (reason)
+    {
+        case QSystemTrayIcon::Trigger:
+        case QSystemTrayIcon::DoubleClick:
+            this->show();
+            break;
+        default:
+            break;
+    }
+}
+
+void MainForm::closeEvent(QCloseEvent* event)
+{
+    this->hide();
+    event->ignore();
 }
 
 void MainForm::onTimerCopy()
@@ -120,7 +145,7 @@ void MainForm::on_pushButton_3_clicked()
 
 void MainForm::on_action_3_triggered()
 {
-    this->close();
+     QApplication::exit();
 }
 
 void MainForm::on_pushButton_4_clicked()

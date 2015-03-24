@@ -24,3 +24,6 @@ HEADERS  += mainform.h \
     logfile.h
 
 FORMS    += mainform.ui
+
+RESOURCES += \
+    resources.qrc
