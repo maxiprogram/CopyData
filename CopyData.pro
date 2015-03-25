@@ -16,14 +16,17 @@ SOURCES += main.cpp\
         mainform.cpp \
     copy.cpp \
     threadcopy.cpp \
-    logfile.cpp
+    logfile.cpp \
+    about.cpp
 
 HEADERS  += mainform.h \
     copy.h \
     threadcopy.h \
-    logfile.h
+    logfile.h \
+    about.h
 
-FORMS    += mainform.ui
+FORMS    += mainform.ui \
+    about.ui
 
 RESOURCES += \
     resources.qrc

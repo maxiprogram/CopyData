@@ -7,7 +7,7 @@ MainForm::MainForm(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    thread_copy = new ThreadCopy();
+    about_form = new About(this);
 
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(onTimerCopy()));
@@ -20,13 +20,13 @@ MainForm::MainForm(QWidget *parent) :
 
     if (time_update<0 || time_update>1 || path_src=="" || path_dest=="")
     {
-        QMessageBox::about(0, "Не верные настройки", "Не верные настройки программы!");
+        QMessageBox::about(0, "Не верные настройки", "Не верные настройки программы!\nНастройте программу и перезапустите её.");
     }else
     {
         ui->comboBox->setCurrentIndex(time_update);
         ui->lineEdit->setText(path_src);
         ui->lineEdit_2->setText(path_dest);
-        timer->start();
+        timer->start(60000);
     }
 
     tray = new QSystemTrayIcon(this);
@@ -34,6 +34,9 @@ MainForm::MainForm(QWidget *parent) :
     tray->setIcon(QIcon("://icon.png"));
     connect(tray,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),this,SLOT(trayIconActivated(QSystemTrayIcon::ActivationReason)));
     tray->show();
+
+    thread_copy = new ThreadCopy();
+    thread_copy->SetTray(tray);
 }
 
 MainForm::~MainForm()
@@ -64,7 +67,7 @@ void MainForm::closeEvent(QCloseEvent* event)
 void MainForm::onTimerCopy()
 {
     QDate last_date = LogFile::GetLastDate();
-    qDebug()<<last_date.toString("dd.MM.yyyy");
+    //qDebug()<<last_date.toString("dd.MM.yyyy");
 
     if (time_update==0)
     {
@@ -77,7 +80,7 @@ void MainForm::onTimerCopy()
         if (last_date<QDate::currentDate())
             flag_copy = true;
     }
-    qDebug()<<"Flag="<<flag_copy;
+    //qDebug()<<"Flag="<<flag_copy;
     if (flag_copy)
     {
         QString new_path_src = path_src;
@@ -163,4 +166,9 @@ void MainForm::on_pushButton_4_clicked()
         thread_copy->setProperty("path_dest", new_path_dest);
         thread_copy->start();
     }
+}
+
+void MainForm::on_action_triggered()
+{
+    about_form->show();
 }

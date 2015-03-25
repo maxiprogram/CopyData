@@ -9,6 +9,7 @@
 #include <QSystemTrayIcon>
 #include <QCloseEvent>
 
+#include "about.h"
 #include "threadcopy.h"
 
 namespace Ui {
@@ -41,6 +42,8 @@ private slots:
 
     void on_pushButton_4_clicked();
 
+    void on_action_triggered();
+
 private:
     Ui::MainForm *ui;
     int time_update;
@@ -50,6 +53,7 @@ private:
     QTimer* timer;
     ThreadCopy* thread_copy;
     QSystemTrayIcon* tray;
+    About* about_form;
 };
 
 #endif // MAINFORM_H
