@@ -17,13 +17,30 @@ bool Copy::CopyData(QString path_src, QString path_dest)
     arg.append("/E");
     proc.setArguments(arg);
     proc.open();
-    qDebug()<<proc.program();
+    //qDebug()<<proc.program();
+    QFile f("info.log");
+    f.open(QIODevice::Append);
+    QByteArray buf;
+    buf.append(proc.program()+"\r\n");
+    for (int i=0; i<proc.arguments().size(); i++)
+    {
+        buf.append(proc.arguments().at(i));
+        buf.append("\r\n");
+    }
+    f.write(buf);
     if (!proc.waitForFinished())
     {
-        qDebug()<<proc.errorString();
+        QByteArray buf;
+        buf.insert(0, proc.errorString());
+        buf.append("\r\n");
+        f.write(buf);
+        //qDebug()<<proc.errorString();
         return false;
     }
-    qDebug()<<proc.readAll();
+    f.write(proc.readAll());
+    f.write("\r\n");
+    //qDebug()<<proc.readAll();
+    f.close();
     proc.close();
     qDebug()<<"End copy";
     return true;

@@ -20,7 +20,7 @@ MainForm::MainForm(QWidget *parent) :
 
     if (time_update<0 || time_update>1 || path_src=="" || path_dest=="")
     {
-        QMessageBox::about(0, "Не верные настройки", "Не верные настройки программы!\nНастройте программу и перезапустите её.");
+        QMessageBox::about(0, "Не верные настройки", "Не верные настройки программы!\nНастройте пути копирования и перезапустите программу.");
     }else
     {
         ui->comboBox->setCurrentIndex(time_update);
